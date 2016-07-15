@@ -1,0 +1,48 @@
+@import '../../css/mixins.styl'
+
+
+.habits-list
+    &__header
+        display: flex
+        align-items: center
+
+
+
+    &__date
+        flex: 1
+
+        font-weight: bold
+
+        user-select none
+
+
+    &__body
+        reset-list()
+
+
+    &__days
+        white-space: nowrap
+
+
+    &__day
+        $size = 30px
+
+        display: inline-block
+        width: $size
+        height: $size
+
+        text-align: center
+        line-height: $size
+
+
+        & + &
+            margin-left: 2px
+
+
+    &__add-form
+        padding: 1em 0 0
+
+
+    &__add-input
+        width: 200px
+        margin: 0 1em 0 0

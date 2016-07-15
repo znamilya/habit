@@ -1,0 +1,35 @@
+{
+    "extends": "./node_modules/eslint-config-airbnb/index.js",
+    "env": {
+        "browser": true,
+    },
+    "globals": {
+        "DEBUG": true,
+    },
+    "rules": {
+        "indent": [2, 4, { "SwitchCase": 1, "VariableDeclarator": 1 }],
+        "space-after-keywords": 0,
+        "space-before-keywords": 0,
+        "space-return-throw-case": 0,
+        "keyword-spacing": ["error", {
+            "before": true,
+            "after": true,
+            "overrides": {}
+        }],
+        "no-unused-vars": [2, {
+            "vars": "all",
+            "args": "none"
+        }],
+        "no-magic-numbers": [1, {
+            "ignore": [500, 401, 403, 404],
+            "ignoreArrayIndexes": true
+        }],
+        "jsx-quotes": [2, "prefer-double"],
+        "react/jsx-quotes": 0,
+        "react/prefer-stateless-function": 0,
+        "react/jsx-indent-props": [2, 4],
+        "react/jsx-sort-props": 0,
+        "react/sort-prop-types": 0,
+        "react/jsx-sort-prop-types": 0
+    }
+}

@@ -1,0 +1,19 @@
+.cell
+    $size = 30px
+
+    box-sizing: border-box
+    display: inline-block
+    width: $size
+    height: $size
+
+    cursor: pointer
+    border: 1px solid black
+    border-radius: 4px
+
+
+    & + &
+        margin-left: 2px
+
+
+    &_active
+        background: #93c251
