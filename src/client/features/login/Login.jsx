@@ -1,19 +1,17 @@
 import React, { PropTypes }     from 'react';
-import { connect }              from 'react-redux';
 import bemCN                    from 'bem-cn';
 
 import Input                    from 'components/Input/Input';
 import Button                   from 'components/Button/Button';
 import Title                    from 'components/Title/Title';
-import * as actions             from './actions';
 
-import './Signup.styl';
+import './Login.styl';
 
 
 /**
  * Описание компонента
  */
-class Signup extends React.Component {
+class Login extends React.Component {
 
     static propTypes = {
     };
@@ -25,10 +23,8 @@ class Signup extends React.Component {
         super(props);
 
         this.state = {
-            errorMessage: window.signupErrorMessage || '',
+            errorMessage: window.loginErrorMessage || '',
         }
-
-        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     /* ------------------------------------------------------------------------------------------ */
@@ -42,24 +38,17 @@ class Signup extends React.Component {
     /* ------------------------------------------------------------------------------------------ */
     /* HANDLERS                                                                                   */
     /* ------------------------------------------------------------------------------------------ */
-    handleSubmit(e) {
-        e.preventDefault();
-
-        const formElements = e.target.elements;
-
-        this.props.signup(formElements.email.value, formElements.password.value);
-    }
 
     /* ------------------------------------------------------------------------------------------ */
     /* RENDER                                                                                     */
     /* ------------------------------------------------------------------------------------------ */
     render() {
-        const b = bemCN('signup');
+        const b = bemCN('login');
 
         return (
             <section className={b()}>
-                <Title level="2">Signup</Title>
-                <form method="POST" action="/signup">
+                <Title level="2">Login</Title>
+                <form method="POST" action="/login">
                     <div>
                         <label htmlFor="email">Email</label>
                         <Input type="text" name="email" id="email" />
@@ -71,8 +60,9 @@ class Signup extends React.Component {
                     </div>
 
                     <div>
-                        <Button>Login</Button>
+                        <Button type="submit">Login</Button>
                     </div>
+
                     <div>
                         {this.state.errorMessage}
                     </div>
@@ -82,10 +72,5 @@ class Signup extends React.Component {
     }
 }
 
-export default connect(
-    state => ({
-    }),
-    {
-        signup: actions.signup,
-    }
-)(Signup);
+
+export default Login;

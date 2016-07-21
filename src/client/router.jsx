@@ -1,12 +1,12 @@
 import React                                from 'react';
 import { Router, Route, IndexRedirect,
          IndexRoute, browserHistory }       from 'react-router';
-
+import { syncHistoryWithStore }             from 'react-router-redux';
 import { leadZero }                         from 'utils/string';
 import App                                  from 'pages/App/App';
 import Index                                from 'pages/Index/Index';
 import Login                                from 'pages/Login/Login';
-import * as userActions                     from 'modules/user/actions';
+import * as userActions                     from 'features/user/actions';
 import appConfig                            from 'appConfig';
 
 
@@ -44,6 +44,8 @@ function validateDateUrl(nextState, replace, next) {
 
 
 export default function getRouter(store) {
+    const reduxHistory = syncHistoryWithStore(browserHistory, store);
+
     function requireLogin(nextState, replace, next) {
         const { user } = store.getState();
 
@@ -67,7 +69,7 @@ export default function getRouter(store) {
     }
 
     return (
-        <Router history={browserHistory}>
+        <Router history={reduxHistory}>
             <Route path="/" component={App}>
                 <Route path="/login" component={Login} />
 

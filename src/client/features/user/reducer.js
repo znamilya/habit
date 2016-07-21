@@ -1,5 +1,5 @@
 import constants        from './constants';
-import signupConstans   from 'modules/Signup/constants';
+import signupConstans   from 'features/signup/constants';
 
 
 export default function reducer(state = {}, action) {

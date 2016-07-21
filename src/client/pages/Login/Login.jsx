@@ -1,8 +1,8 @@
 import React, { PropTypes }     from 'react';
 import bemCN                    from 'bem-cn';
 
-import Login                    from 'modules/Login/Login';
-import Signup                   from 'modules/Signup/Signup';
+import Login                    from 'features/login/Login';
+import Signup                   from 'features/signup/Signup';
 
 import './Login.styl';
 

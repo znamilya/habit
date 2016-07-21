@@ -10,6 +10,10 @@ import './Cell.styl';
 class Cell extends React.Component {
 
     static propTypes = {
+        // Номер днф месяца которому соответсвует ячейка
+        dayNumber: PropTypes.number,
+
+        // Активна ячейка или нет
         active: PropTypes.bool,
     };
 
@@ -19,7 +23,11 @@ class Cell extends React.Component {
 
     constructor(props) {
         super(props);
+
+
+        this.handleClick = this.handleClick.bind(this);
     }
+
 
     /* ------------------------------------------------------------------------------------------ */
     /* REACT                                                                                      */
@@ -32,6 +40,10 @@ class Cell extends React.Component {
     /* ------------------------------------------------------------------------------------------ */
     /* HANDLERS                                                                                   */
     /* ------------------------------------------------------------------------------------------ */
+    handleClick() {
+        this.props.onToggle(this.props.dayNumber);
+    }
+
 
     /* ------------------------------------------------------------------------------------------ */
     /* RENDER                                                                                     */
@@ -40,7 +52,9 @@ class Cell extends React.Component {
         const b = bemCN('cell');
 
         return (
-            <div className={b({ active: this.props.active })}></div>
+            <div className={b({ active: this.props.active })}
+                onClick={this.handleClick}
+            ></div>
         );
     }
 }

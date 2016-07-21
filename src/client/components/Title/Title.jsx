@@ -10,6 +10,7 @@ import './Title.styl';
 class Title extends React.Component {
 
     static propTypes = {
+        children: PropTypes.node.isRequired,
         level: PropTypes.oneOf(['1', '2', '3', '4', '5', '6'])
     };
 
@@ -38,9 +39,15 @@ class Title extends React.Component {
     /* ------------------------------------------------------------------------------------------ */
     render() {
         const b = bemCN('title');
+        const { level } = this.props;
+        const tag = {
+            name: `h${level}`
+        };
 
         return (
-            <div className={b()}></div>
+            <tag.name className={b({ level })}>
+                {this.props.children}
+            </tag.name>
         );
     }
 }

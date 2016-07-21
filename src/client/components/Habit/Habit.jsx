@@ -12,17 +12,29 @@ import './Habit.styl';
 class Habit extends React.Component {
 
     static propTypes = {
+        _id: PropTypes.string.isRequired,
         title: PropTypes.string.isRequired,
         daysCount: PropTypes.number.isRequired,
+        activities: PropTypes.array,
+
+        // Обработчик клик на ячейку
+        onActivityToggle: PropTypes.func,
+
+        // Обработчик удаления увлечения
         onDelete: PropTypes.func,
     };
 
     static defaultProps = {
+        activities: [],
+        onActivityToggle: () => {},
         onDelete: () => {},
     };
 
     constructor(props) {
         super(props);
+
+        this.handleCellToggle = this.handleCellToggle.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
     }
 
     /* ------------------------------------------------------------------------------------------ */
@@ -36,6 +48,14 @@ class Habit extends React.Component {
     /* ------------------------------------------------------------------------------------------ */
     /* HANDLERS                                                                                   */
     /* ------------------------------------------------------------------------------------------ */
+    handleCellToggle(dayNumber) {
+        this.props.onActivityToggle(this.props._id, dayNumber);
+    }
+
+    handleDelete() {
+        this.props.onDelete(this.props._id, this.props.title);
+    }
+
 
     /* ------------------------------------------------------------------------------------------ */
     /* RENDER                                                                                     */
@@ -43,9 +63,18 @@ class Habit extends React.Component {
     renderItems() {
         return (new Array(this.props.daysCount))
             .fill(0)
-            .map((cell, key) => (
-                <Cell key={key} />
-            ));
+            .map((cell, index) => {
+                const isActive = this.props.activities.includes(index + 1);
+
+                return (
+                    <Cell
+                        dayNumber={index + 1}
+                        active={isActive}
+                        onToggle={this.handleCellToggle}
+                        key={index}
+                    />
+                );
+            });
     }
 
     render() {
@@ -53,8 +82,13 @@ class Habit extends React.Component {
 
         return (
             <li className={b()}>
-                <span onClick={this.props.onDelete}>x</span>
-                <div className={b('title')}>{this.props.title}</div>
+                <div className={b('title')}>
+                    <i className={b('delete').mix('material-icons')}
+                        onClick={this.handleDelete}>
+                        close
+                    </i>
+                    {this.props.title}
+                </div>
                 <div className={b('cells')}>
                     {this.renderItems()}
                 </div>

@@ -2,7 +2,7 @@ import React, { PropTypes }     from 'react';
 import bemCN                    from 'bem-cn';
 
 import Page                     from 'pages/Page';
-import HabitsList               from 'modules/HabitsList/HabitsList'
+import HabitsList               from 'features/habitsList/HabitsList'
 
 import './Index.styl';
 

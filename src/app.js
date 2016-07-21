@@ -10,6 +10,10 @@ const app = express();
 
 mongoose.connect('mongodb://adminochka:123@ds017175.mlab.com:17175/habit');
 
+
+/* ---------------------------------------------------------------------------------------------- */
+/* APP CONFIG                                                                                     */
+/* ---------------------------------------------------------------------------------------------- */
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(express.static(path.join(__dirname, '..', 'public')));
@@ -24,11 +28,18 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
-const api = require('./modules/api');
-app.use('/api', api.router);
 
-const auth = require('./modules/auth');
+/* ---------------------------------------------------------------------------------------------- */
+/* ROUTERS                                                                                        */
+/* ---------------------------------------------------------------------------------------------- */
+const auth = require('./features/auth');
 app.use('/', auth.router);
+
+const user = require('./features/users');
+app.use('/api', user.router);
+
+const habits = require('./features/habits');
+app.use('/api', habits.router);
 
 app.get('*', (req, res) => {
     console.log('* route', req.url);
@@ -39,6 +50,10 @@ app.use((err, req, res, next) => {
     res.send(err.message);
 });
 
+
+/* ---------------------------------------------------------------------------------------------- */
+/* RUN                                                                                            */
+/* ---------------------------------------------------------------------------------------------- */
 app.listen(7878, () => {
     console.log('App listening on port 7878');
 });

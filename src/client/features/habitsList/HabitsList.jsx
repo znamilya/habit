@@ -1,27 +1,33 @@
-import React                    from 'react';
+import React, { PropTypes }     from 'react';
 import { connect }              from 'react-redux';
-import { bindActionCreators }   from 'redux';
 import bemCN                    from 'bem-cn';
-import { Link }                 from 'react-router';
 
-import { leadZero }             from 'utils/string';
 import { getDaysInMonth }       from 'utils/date';
 import Input                    from 'components/Input/Input';
 import Button                   from 'components/Button/Button';
 import Habit                    from 'components/Habit/Habit';
+import DateSwitcher             from 'components/DateSwitcher/DateSwitcher';
+import {
+    resolvePrevHrefMaybe,
+    resolveNextHrefMaybe
+}                               from './reducer';
 import * as actions             from './actions';
-import appConfig                from 'appConfig';
 
 import './HabitsList.styl';
 
 
 class HabitsList extends React.Component {
 
+    static propTypes = {
+        year: PropTypes.number.isRequired,
+        month: PropTypes.number.isRequired,
+    };
+
     constructor(props) {
         super(props);
 
         this.handleAddFormSubit = this.handleAddFormSubit.bind(this);
-        // this.handleItemDelete = this.handleItemDelete.bind(this);
+        this.handleHabitDelete = this.handleHabitDelete.bind(this);
     }
 
 
@@ -32,17 +38,19 @@ class HabitsList extends React.Component {
         this.props.fetch(this.props.year, this.props.month);
     }
 
+    componentWillUpdate(nextProps) {
+        // При смене дня или месяця, загружаем список актуальных увлечений
+        if (nextProps.year !== this.props.year || nextProps.month !== this.props.month) {
+            this.props.reset();
+            this.props.fetch(nextProps.year, nextProps.month);
+        }
+    }
+
 
     /* ------------------------------------------------------------------------------------------ */
     /* METHODS                                                                                    */
     /* ------------------------------------------------------------------------------------------ */
-    extractActualActivity(activities) {
-        var activity = activities.filter(item => {
-            return item.year === this.props.year && item.month === this.props.month;
-        })[0];
 
-        return activity ? activity.days : [];
-    }
 
     /* ------------------------------------------------------------------------------------------ */
     /* HANDLERS                                                                                   */
@@ -58,52 +66,18 @@ class HabitsList extends React.Component {
             .then(() => formNode.reset());
     }
 
-    handleItemDelete(habitId) {
-        this.props.remove(habitId);
+    handleHabitDelete(id, title) {
+        const confirm = window.confirm(`Вы действительно хотите удалить увлечение ${title}?`);
+
+        if (confirm) {
+            this.props.remove(id);
+        }
     }
 
 
     /* ------------------------------------------------------------------------------------------ */
     /* RENDER                                                                                     */
     /* ------------------------------------------------------------------------------------------ */
-    renderPrevButton() {
-        const prevDate = new Date(this.props.year, this.props.month - 2);
-        const prevYear = prevDate.getFullYear();
-
-        if (prevYear < appConfig.minAvailableYear) {
-            return null;
-        }
-
-        return (
-            <Link to={`/${prevYear}/${leadZero(prevDate.getMonth() + 1, 2)}`}>prev</Link>
-        )
-    }
-
-    renderNextButton() {
-        const nextDate = new Date(this.props.year, this.props.month);
-        const nextYear = nextDate.getFullYear();
-
-        if (nextDate > Date.now()) {
-            return null;
-        }
-
-        return (
-            <Link to={`/${nextYear}/${leadZero(nextDate.getMonth() + 1, 2)}`}>next</Link>
-        )
-    }
-
-    renderDate(b) {
-        return (
-            <div className={b('date')}>
-                {this.renderPrevButton()}
-                {' '}
-                Июль {this.props.year}
-                {' '}
-                {this.renderNextButton()}
-            </div>
-        )
-    }
-
     renderDaysIndexes(b, daysCount) {
         return (new Array(daysCount))
             .fill(0)
@@ -114,45 +88,54 @@ class HabitsList extends React.Component {
             ));
     }
 
-    renderItems(b, daysCount) {
-        const { data } = this.props.habitsList;
+    renderHabits(b, daysCount) {
+        const { data, isLoading } = this.props.habitsList;
+
+        if (isLoading) {
+            return 'Грузю...';
+        }
 
         if (!data.length) {
             return 'Вы не завели ни одной привычки...';
         }
 
 
-        return data
-            .map((habit, key) => {
-                const actualActivity = this.extractActualActivity(habit.activities);
-
-                return (
-                    <Habit
-                        title={habit.title}
-                        activities={actualActivity.days}
-                        daysCount={daysCount}
-                        key={key}
-                        onDelete={this.handleItemDelete.bind(this, habit._id)}
-                    />
-                );
-            });
+        return data.map((habit, key) => {
+            return (
+                <Habit
+                    {...habit}
+                    daysCount={daysCount}
+                    key={key}
+                    onActivityToggle={this.props.toggleActivity}
+                    onDelete={this.handleHabitDelete}
+                />
+            );
+        });
     }
 
     render() {
         const b = bemCN('habits-list');
         const daysCount = getDaysInMonth(this.props.year, this.props.month);
+        const { year, month } = this.props;
 
         return (
             <div className={b()}>
                 <div className={b('header')}>
-                    {this.renderDate(b)}
+                    <div className={b('date')}>
+                        <DateSwitcher
+                            year={year}
+                            month={month}
+                            prevHref={resolvePrevHrefMaybe(year, month)}
+                            nextHref={resolveNextHrefMaybe(year, month)}
+                        />
+                    </div>
 
                     <div className={b('days')}>
                         {this.renderDaysIndexes(b, daysCount)}
                     </div>
                 </div>
                 <ul className={b('body')}>
-                    {this.renderItems(b, daysCount)}
+                    {this.renderHabits(b, daysCount)}
                 </ul>
                 <div className="add">
                     <form className={b('add-form')}
@@ -161,7 +144,7 @@ class HabitsList extends React.Component {
                         onSubmit={this.handleAddFormSubit}
                     >
                         <Input type="text" name="title" mix={b('add-input')} />
-                        <Button type="submit" theme="green">add new</Button>
+                        <Button type="submit">Add new</Button>
                     </form>
                 </div>
             </div>
@@ -178,5 +161,7 @@ export default connect(
         fetch: actions.fetch,
         add: actions.add,
         remove: actions.remove,
+        reset: actions.reset,
+        toggleActivity: actions.toggleActivity,
     }
 )(HabitsList);
