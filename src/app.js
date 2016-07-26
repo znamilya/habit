@@ -1,14 +1,22 @@
 const path           = require('path');
 const express        = require('express');
+const favicon        = require('serve-favicon');
 const bodyParser     = require('body-parser');
 const expressSession = require('express-session');
+const morgan         = require('morgan');
 const mongoose       = require('mongoose');
 const passport       = require('passport');
 const flash          = require('connect-flash');
+const config         = require('config');
 
-const app = express();
+const app            = express();
+const dbConfig       = config.get('db');
 
-mongoose.connect('mongodb://adminochka:123@ds017175.mlab.com:17175/habit');
+
+mongoose.connect(dbConfig.url, {
+    user: dbConfig.username,
+    pass: dbConfig.password
+});
 
 
 /* ---------------------------------------------------------------------------------------------- */
@@ -16,6 +24,7 @@ mongoose.connect('mongodb://adminochka:123@ds017175.mlab.com:17175/habit');
 /* ---------------------------------------------------------------------------------------------- */
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+app.use(favicon(path.join(__dirname, '..', 'favicon.ico')));
 app.use(express.static(path.join(__dirname, '..', 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -24,6 +33,7 @@ app.use(expressSession({
     resave: false,
     saveUninitialized: true,
 }));
+app.use(morgan('dev'));
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
@@ -42,11 +52,24 @@ const habits = require('./features/habits');
 app.use('/api', habits.router);
 
 app.get('*', (req, res) => {
-    console.log('* route', req.url);
     res.render('index');
 });
 
+
+/* ---------------------------------------------------------------------------------------------- */
+/* ERROR HANDLING                                                                                 */
+/* ---------------------------------------------------------------------------------------------- */
+const STATUS_CODES = require('http').STATUS_CODES;
+const HttpError = require('./errors').HttpError;
+
 app.use((err, req, res, next) => {
+    if (err instanceof HttpError) {
+        const message = err.message || STATUS_CODES[err.status] || 'Error';
+
+        res.status(err.status).json({ ok: 0, message });
+        return;
+    }
+
     res.send(err.message);
 });
 

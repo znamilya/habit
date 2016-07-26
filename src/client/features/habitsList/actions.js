@@ -51,6 +51,9 @@ export function toggleActivity(id, dayOfActivity) {
 }
 
 
+export function updateTitle(id, newTitle) {
+}
+
 
 export function reset() {
     return {

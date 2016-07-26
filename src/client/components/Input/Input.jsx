@@ -1,5 +1,5 @@
 import React, { PropTypes }     from 'react';
-import bemCN                    from 'bem-cn';
+import bemchik                  from 'bemchik';
 
 import './Input.styl';
 
@@ -10,7 +10,7 @@ import './Input.styl';
 class Input extends React.Component {
 
     static propTypes = {
-        mix: PropTypes.func,
+        mix: PropTypes.object,
         onChange: PropTypes.func,
     };
 
@@ -36,7 +36,7 @@ class Input extends React.Component {
     /* RENDER                                                                                     */
     /* ------------------------------------------------------------------------------------------ */
     render() {
-        const b = bemCN('input');
+        const b = bemchik('input');
         const { mix, ...rest } = this.props;
 
         if (this.props.onChange) {
@@ -50,7 +50,7 @@ class Input extends React.Component {
         }
 
         return (
-            <input className={b({}).mix(mix)}
+            <input className={b().mix(mix)}
                 {...rest}
             />
         );

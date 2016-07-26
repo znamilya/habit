@@ -2,7 +2,10 @@ import constants        from './constants';
 import signupConstans   from 'features/signup/constants';
 
 
-export default function reducer(state = {}, action) {
+const defaultState = {};
+
+
+export default function reducer(state = defaultState, action) {
     switch (action.type) {
 
         case constants.FETCH_SESSION: {
@@ -11,6 +14,10 @@ export default function reducer(state = {}, action) {
 
         case signupConstans.SIGNUP: {
             return action.response;
+        }
+
+        case constants.RESET: {
+            return defaultState;
         }
 
         default: {

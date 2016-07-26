@@ -1,7 +1,7 @@
 import React, { PropTypes }     from 'react';
-import bemCN                    from 'bem-cn';
-
-import Cell                     from 'components/Cell/Cell';
+import ReactDOM                 from 'react-dom';
+import bemchik                  from 'bemchik';
+import Cell                     from '../Cell/Cell';
 
 import './Habit.styl';
 
@@ -22,28 +22,54 @@ class Habit extends React.Component {
 
         // Обработчик удаления увлечения
         onDelete: PropTypes.func,
+
+        // Обработчик изменения заголовка
+        onTitleUpdate: PropTypes.func,
     };
 
     static defaultProps = {
         activities: [],
         onActivityToggle: () => {},
         onDelete: () => {},
+        onTitleUpdate: () => {},
     };
 
     constructor(props) {
         super(props);
 
+        this.state = {
+            isEdit: false,
+        };
+
         this.handleCellToggle = this.handleCellToggle.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+        this.handleTitleInputBlur = this.handleTitleInputBlur.bind(this);
     }
 
     /* ------------------------------------------------------------------------------------------ */
     /* REACT                                                                                      */
     /* ------------------------------------------------------------------------------------------ */
+    componentDidUpdate(prevProps, prevState) {
+        if (!prevState.isEdit && this.state.isEdit) {
+            this.titleInputNode = ReactDOM.findDOMNode(this.refs.titleInput);
+
+            titleInputNode.focus();
+        }
+    }
+
+    componentWillUnmount() {
+        this.titleInputNode = null;
+    }
+
 
     /* ------------------------------------------------------------------------------------------ */
     /* METHODS                                                                                    */
     /* ------------------------------------------------------------------------------------------ */
+    enableEditMode() {
+        this.setState({
+            isEdit: true,
+        });
+    }
 
     /* ------------------------------------------------------------------------------------------ */
     /* HANDLERS                                                                                   */
@@ -54,6 +80,12 @@ class Habit extends React.Component {
 
     handleDelete() {
         this.props.onDelete(this.props._id, this.props.title);
+    }
+
+    handleTitleInputBlur() {
+        const newTitle = this.titleInputNode.value;
+
+        this.props.onTitleUpdate(this.props._id, newTitle)
     }
 
 
@@ -77,19 +109,40 @@ class Habit extends React.Component {
             });
     }
 
-    render() {
-        const b = bemCN('habit');
+    renderTitleContent(b) {
+        if (this.state.isEdit) {
+            return (
+                <input className={b('title-input')}
+                    type="text"
+                    defaultValue={this.props.title}
+                    ref="titleInput"
+                    onBlur={this.handleTitleInputBlur}
+                />
+            );
+        }
 
         return (
-            <li className={b()}>
-                <div className={b('title')}>
-                    <i className={b('delete').mix('material-icons')}
+            <span className={b("title-text")}
+                onClick={this.enableEditMode}
+            >
+                {this.props.title}
+            </span>
+        );
+    }
+
+    render() {
+        const b = bemchik('habit');
+
+        return (
+            <li className="habit">
+                <div className={b("title")}>
+                    <i className={b("delete").mix("material-icons")}
                         onClick={this.handleDelete}>
                         close
                     </i>
-                    {this.props.title}
+                    {this.renderTitleContent(b)}
                 </div>
-                <div className={b('cells')}>
+                <div className={b("cells")}>
                     {this.renderItems()}
                 </div>
             </li>

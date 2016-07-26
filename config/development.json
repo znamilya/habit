@@ -1,0 +1,7 @@
+{
+  "db": {
+    "url": "mongodb://username:password@ds017175.mlab.com:17175/habit",
+    "username": "adminochka",
+    "password": "123"
+  }
+}

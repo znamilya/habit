@@ -1,17 +1,13 @@
+const HttpError = require('../../errors').HttpError;
 const Model = require('./model');
 
 
-module.exports = {
-    fetchAll: (req, res) => {
+const controller = {
+    getAll: (req, res, next) => {
         const { user, query: { year, month } } = req;
 
         if (!user) {
-            res.status(401)
-                .json({
-                    ok: 0,
-                    error: '',
-                });
-
+            next(new HttpError(401));
             return;
         }
 
@@ -24,18 +20,11 @@ module.exports = {
                 ]
             }, 'year month activities title')
             .then(result => {
-                res.json({
-                    ok: 1,
-                    result,
-                });
+                res.json({ ok: 1, result });
             })
             .catch(err => {
-                console.log('Error on fetch habits', err);
-                res.status(500);
-                res.json({
-                    ok: 0,
-                    err: err.errors,
-                })
+                console.log(err);
+                next(new HttpError(500));
             });
     },
 
@@ -49,80 +38,65 @@ module.exports = {
             owner: user._id,
         });
 
-        newHabit
-            .save()
-            .then(result => {
-                res.status(201)
-                res.json({
-                    ok: 1,
-                    result,
-                });
-            })
-            .catch(err => {
-                console.log('Error on save', err);
-                res.status(400);
-                res.json({
-                    err: err.errors,
-                })
-            })
+
+        controller._save(newHabit, 200, res);
     },
 
-    updateOne: (req, res) => {
-        Model
-            .findById(req.params.id)
+    fetchOne: (req, res, next) => {
+        Model.findById(req.params.id)
             .then(habit => {
-                const { dayNumber } = req.body;
-                const { activities } = habit;
-                const activityIndex = activities.indexOf(dayNumber);
-
-                if (activityIndex === -1) {
-                    activities.push(dayNumber)
-                } else {
-                    activities.splice(activityIndex, 1);
+                if (!habit) {
+                    next(new HttpError(404));
+                    return;
                 }
 
-                habit.save()
-                    .then(result => {
-                        console.log('Habit was successfully updated');
-                        res.json({
-                            ok: 1,
-                            result,
-                        })
-                    })
-                    .catch(err => {
-                        console.log('Can`t save updated habit', err);
-                    })
-
-            }, err => {
-                console.log('Can`t find habit');
-                res.status(404)
-                res.json({
-                    error: err,
-                });
+                req.habit = habit;
+                next();
             })
             .catch(err => {
-                res.status(500);
-                res.json({
-                    error: err,
-                });
-            })
+                console.log(err);
+                next(new HttpError(500));
+            });
+    },
+
+    updateOne: (req, res, next) => {
+        const { habit, body: { dayNumber } } = req;
+        const { activities } = habit;
+        const activityIndex = activities.indexOf(dayNumber);
+
+        if (activityIndex === -1) {
+            activities.push(dayNumber)
+        } else {
+            activities.splice(activityIndex, 1);
+        }
+
+        controller._save(habit, 200, res);
     },
 
     deleteOne: (req, res) => {
-        const habitToRemoveId = req.params.id;
+        const { habit } = req;
 
-        Model
-            .findByIdAndRemove(habitToRemoveId)
+        habit.remove()
             .then(result => {
-                res.json({
-                    ok: 1,
-                    result
-                })
-            }, err => {
-                res.status(404);
-                res.json({
-                    ok: 0,
-                })
-            });
+                res.json({ ok: 1, result: habit });
+            })
+            .catch(err => {
+                console.log(err);
+                next(new HttpError(500));
+            })
     },
-}
+
+    _save: (entity, status, res) => {
+        entity.save()
+            .then(result => {
+                res.status(status).json({ ok: 1, result })
+            })
+            .catch(err => {
+                console.log(err);
+                next(new HttpError(500));
+            })
+    }
+};
+
+
+module.exports = controller;

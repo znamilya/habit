@@ -1,21 +1,13 @@
 import React, { PropTypes }     from 'react';
-import bemchik                  from 'bemchik';
-
-import './Title.styl';
 
 
 /**
  * Описание компонента
  */
-class Title extends React.Component {
+class Form extends React.Component {
 
     static propTypes = {
         children: PropTypes.node.isRequired,
-        level: PropTypes.oneOf(['1', '2', '3', '4', '5', '6'])
-    };
-
-    static defaultProps = {
-        level: 1,
     };
 
 
@@ -23,19 +15,13 @@ class Title extends React.Component {
     /* RENDER                                                                                     */
     /* ------------------------------------------------------------------------------------------ */
     render() {
-        const b = bemchik('title');
-        const { level } = this.props;
-        const tag = {
-            name: `h${level}`
-        };
-
         return (
-            <tag.name className={b({ level })}>
+            <div className="form__row">
                 {this.props.children}
-            </tag.name>
+            </div>
         );
     }
 }
 
 
-export default Title;
+export default Form;

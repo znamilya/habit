@@ -1,8 +1,8 @@
 import React, { PropTypes }     from 'react';
-import bemCN                    from 'bem-cn';
+import bemchik                  from 'bemchik';
 import { Link }                 from 'react-router';
 
-import { resolveNameByIndex }   from 'helpers/date';
+import { resolveNameByIndex }   from '../../helpers/date';
 
 import './DateSwitcher.styl';
 
@@ -38,14 +38,14 @@ class DateSwitcher extends React.Component {
         const iconText = dir === 'next' ? 'navigate_next' : 'navigate_before';
 
         return (
-            <Link className={b('nav').mix('material-icons')} to={href}>
+            <Link className={b('nav', { [dir]: true }).mix('material-icons')} to={href}>
                 {iconText}
             </Link>
         )
     }
 
     render() {
-        const b = bemCN('date-switcher');
+        const b = bemchik('date-switcher');
 
         return (
             <div className={b()}>

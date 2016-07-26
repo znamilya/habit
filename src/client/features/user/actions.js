@@ -9,3 +9,10 @@ export function fetchSession() {
         promise: axios.get('/api/user'),
     };
 }
+
+
+export function reset() {
+    return {
+        type: constants.RESET,
+    };
+}

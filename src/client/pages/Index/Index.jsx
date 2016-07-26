@@ -1,5 +1,5 @@
 import React, { PropTypes }     from 'react';
-import bemCN                    from 'bem-cn';
+import bemchik                  from 'bemchik';
 
 import Page                     from 'pages/Page';
 import HabitsList               from 'features/habitsList/HabitsList'
@@ -20,15 +20,17 @@ class IndexPage extends React.Component {
     /* RENDER                                                                                     */
     /* ------------------------------------------------------------------------------------------ */
     render() {
-        const b = bemCN('index-page');
+        const b = bemchik('index-page');
         const { params } = this.props;
 
         return (
             <Page title="Index">
-                <HabitsList
-                    year={Number(params.year)}
-                    month={Number(params.month)}
-                />
+                <div className={b()}>
+                    <HabitsList
+                        year={Number(params.year)}
+                        month={Number(params.month)}
+                    />
+                </div>
             </Page>
         );
     }

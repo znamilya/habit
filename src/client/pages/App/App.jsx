@@ -1,7 +1,7 @@
 import React, { PropTypes }     from 'react';
 import { withRouter }           from 'react-router'
 import { connect }              from 'react-redux';
-import bemCN                    from 'bem-cn';
+import bemchik                  from 'bemchik';
 import Logo                     from 'components/Logo/Logo';
 
 import { leadZero }             from 'utils/string';
@@ -20,16 +20,19 @@ class App extends React.Component {
     };
 
 
+
+    /* ------------------------------------------------------------------------------------------ */
+    /* REACT                                                                                      */
+    /* ------------------------------------------------------------------------------------------ */
     componentWillReceiveProps(nextProps) {
         if (nextProps.user._id && !this.props.user._id) {
+            // FIXME: Заменить на текущую дату
             this.props.router.push('/2016/07');
         }
-    }
 
-    createUrlForRedirect() {
-        const now = new Date();
-
-        return `/${now.getFullYear()}/${leadZero(now.getMonth) + 1}`;
+        if (!nextProps.user._id && this.props.user._id) {
+            this.props.router.push('/login');
+        }
     }
 
 
@@ -49,7 +52,7 @@ class App extends React.Component {
     }
 
     render() {
-        const b = bemCN('app');
+        const b = bemchik('app');
 
         return (
             <div className={b()}>

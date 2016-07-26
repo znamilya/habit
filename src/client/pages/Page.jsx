@@ -19,7 +19,7 @@ class Page extends React.Component {
 
 
     setDocumentTitle(title) {
-        document.title = `${title} - Habits`;
+        document.title = `Habits - ${title}`;
     }
 
     /* ------------------------------------------------------------------------------------------ */

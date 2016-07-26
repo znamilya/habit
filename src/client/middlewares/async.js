@@ -1,4 +1,5 @@
 /* eslint-disable consistent-return */
+import * as userActions     from 'features/user/actions'
 
 
 function generateToken() {
@@ -40,8 +41,8 @@ export default function async({ dispatch, getState }) {
                         type: FAILURE,
                         ...rest,
                         error: {
-                            status: 200,
-                            data: response.data.error,
+                            status: 500,
+                            message: response.data.message,
                         }
                     });
                 }
@@ -55,12 +56,17 @@ export default function async({ dispatch, getState }) {
             })
             .catch(error => {
                 delete currRequests[type];
+
+                if (error.status === 401) {
+                    return next(userActions.reset());
+                }
+
                 return next({
                     type: FAILURE,
                     ...rest,
                     error: {
                         status: error.status,
-                        data: error.data,
+                        message: error.data.message,
                     }
                 });
             });

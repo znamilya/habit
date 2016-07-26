@@ -1,5 +1,5 @@
 import React, { PropTypes }     from 'react';
-import bemCN                    from 'bem-cn';
+import bemchik                  from 'bemchik';
 
 import './Button.styl';
 
@@ -9,7 +9,7 @@ class Button extends React.Component {
     static propTypes = {
         children: PropTypes.node.isRequired,
         tagName: PropTypes.string,
-        mix: PropTypes.func,
+        mix: PropTypes.object,
         theme: PropTypes.string,
         size: PropTypes.string,
         onClick: PropTypes.func,
@@ -17,6 +17,7 @@ class Button extends React.Component {
 
     static defaultProps = {
         tagName: 'button',
+        onClick: () => {},
     };
 
 
@@ -24,7 +25,7 @@ class Button extends React.Component {
     /* RENDER                                                                                     */
     /* ------------------------------------------------------------------------------------------ */
     render() {
-        const b = bemCN('button');
+        const b = bemchik('button');
         const { tagName, theme, mix, size, ...rest } = this.props;
 
         return (

@@ -1,6 +1,6 @@
 import React, { PropTypes }     from 'react';
 import { connect }              from 'react-redux';
-import bemCN                    from 'bem-cn';
+import bemchik                  from 'bemchik';
 
 import { getDaysInMonth }       from 'utils/date';
 import Input                    from 'components/Input/Input';
@@ -108,13 +108,14 @@ class HabitsList extends React.Component {
                     key={key}
                     onActivityToggle={this.props.toggleActivity}
                     onDelete={this.handleHabitDelete}
+                    onTitleUpdate={this.props.updateTitle}
                 />
             );
         });
     }
 
     render() {
-        const b = bemCN('habits-list');
+        const b = bemchik('habits-list');
         const daysCount = getDaysInMonth(this.props.year, this.props.month);
         const { year, month } = this.props;
 
@@ -163,5 +164,6 @@ export default connect(
         remove: actions.remove,
         reset: actions.reset,
         toggleActivity: actions.toggleActivity,
+        updateTitle: actions.updateTitle,
     }
 )(HabitsList);

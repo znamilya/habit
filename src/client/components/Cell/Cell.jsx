@@ -1,5 +1,5 @@
 import React, { PropTypes }     from 'react';
-import bemCN                    from 'bem-cn';
+import bemchik                  from 'bemchik';
 
 import './Cell.styl';
 
@@ -15,10 +15,13 @@ class Cell extends React.Component {
 
         // Активна ячейка или нет
         active: PropTypes.bool,
+
+        onToggle: PropTypes.func,
     };
 
     static defaultProps = {
-        active: false
+        active: false,
+        onToggle: () => {},
     };
 
     constructor(props) {
@@ -28,14 +31,6 @@ class Cell extends React.Component {
         this.handleClick = this.handleClick.bind(this);
     }
 
-
-    /* ------------------------------------------------------------------------------------------ */
-    /* REACT                                                                                      */
-    /* ------------------------------------------------------------------------------------------ */
-
-    /* ------------------------------------------------------------------------------------------ */
-    /* METHODS                                                                                    */
-    /* ------------------------------------------------------------------------------------------ */
 
     /* ------------------------------------------------------------------------------------------ */
     /* HANDLERS                                                                                   */
@@ -49,7 +44,7 @@ class Cell extends React.Component {
     /* RENDER                                                                                     */
     /* ------------------------------------------------------------------------------------------ */
     render() {
-        const b = bemCN('cell');
+        const b = bemchik('cell');
 
         return (
             <div className={b({ active: this.props.active })}

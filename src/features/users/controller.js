@@ -1,4 +1,7 @@
-module.exports = {
+const HttpError = require('../../errors').HttpError;
+
+
+const controller = {
     get: (req, res) => {
         const { user } = req;
 
@@ -18,5 +21,17 @@ module.exports = {
                 email: user.email,
             },
         });
+    },
+
+    requireLogin: (req, res, next) => {
+        if (!req.isAuthenticated()) {
+            next(new HttpError(401));
+            return;
+        }
+
+        next();
     }
-}
+};
+
+
+module.exports = controller;

@@ -1,6 +1,7 @@
 import React, { PropTypes }     from 'react';
-import bemCN                    from 'bem-cn';
+import bemchik                  from 'bemchik';
 
+import Form                     from 'components/Form/Form';
 import Input                    from 'components/Input/Input';
 import Button                   from 'components/Button/Button';
 import Title                    from 'components/Title/Title';
@@ -42,31 +43,41 @@ class Login extends React.Component {
     /* ------------------------------------------------------------------------------------------ */
     /* RENDER                                                                                     */
     /* ------------------------------------------------------------------------------------------ */
+    renderErrorMessageIfNeeded(b) {
+        if (!this.state.errorMessage) {
+            return null;
+        }
+
+        return (
+            <Form.Row>
+                {this.state.errorMessage}
+            </Form.Row>
+        )
+    }
+
     render() {
-        const b = bemCN('login');
+        const b = bemchik('login');
 
         return (
             <section className={b()}>
-                <Title level="2">Login</Title>
-                <form method="POST" action="/login">
-                    <div>
-                        <label htmlFor="email">Email</label>
+                <Title level="2">Войти</Title>
+                <Form method="POST" action="/login">
+                    <Form.Row>
+                        <Form.Label htmlFor="email">Адрес электронной почты</Form.Label>
                         <Input type="text" name="email" id="email" />
-                    </div>
+                    </Form.Row>
 
-                    <div>
-                        <label htmlFor="password">Password</label>
+                    <Form.Row>
+                        <Form.Label htmlFor="password">Пароль</Form.Label>
                         <Input type="password" name="password" id="password" />
-                    </div>
+                    </Form.Row>
 
-                    <div>
-                        <Button type="submit">Login</Button>
-                    </div>
+                    <Form.Row>
+                        <Button type="submit">Войти</Button>
+                    </Form.Row>
 
-                    <div>
-                        {this.state.errorMessage}
-                    </div>
-                </form>
+                    {this.renderErrorMessageIfNeeded(b)}
+                </Form>
             </section>
         );
     }

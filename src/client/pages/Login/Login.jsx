@@ -1,6 +1,7 @@
 import React, { PropTypes }     from 'react';
-import bemCN                    from 'bem-cn';
+import bemchik                  from 'bemchik';
 
+import Page                     from 'pages/Page';
 import Login                    from 'features/login/Login';
 import Signup                   from 'features/signup/Signup';
 
@@ -16,13 +17,16 @@ class LoginPage extends React.Component {
     /* RENDER                                                                                     */
     /* ------------------------------------------------------------------------------------------ */
     render() {
-        const b = bemCN('login-page');
+        const b = bemchik('login-page');
 
         return (
-            <div className={b()}>
-                <Login />
-                <Signup />
-            </div>
+            <Page title="Login">
+                <div className={b()}>
+                    <Login />
+                    <hr className={b('separator')} />
+                    <Signup />
+                </div>
+            </Page>
         );
     }
 }
