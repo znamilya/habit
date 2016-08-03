@@ -7,10 +7,6 @@ import Component            from './Button';
 
 const defaultProps = {
     children: 'text',
-    // mix: PropTypes.func,
-    // theme: PropTypes.string,
-    // size: PropTypes.string,
-    // onClick: PropTypes.func,
 };
 
 

@@ -1,5 +1,5 @@
 import React, { PropTypes }     from 'react';
-import bemchik                  from 'bemchik';
+import bemcl                    from 'bem-cl';
 
 import Page                     from 'pages/Page';
 import Login                    from 'features/login/Login';
@@ -17,7 +17,7 @@ class LoginPage extends React.Component {
     /* RENDER                                                                                     */
     /* ------------------------------------------------------------------------------------------ */
     render() {
-        const b = bemchik('login-page');
+        const b = bemcl('login-page');
 
         return (
             <Page title="Login">

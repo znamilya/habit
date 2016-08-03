@@ -1,5 +1,5 @@
 import React, { PropTypes }     from 'react';
-import bemchik                  from 'bemchik';
+import bemcl                    from 'bem-cl';
 
 import Form                     from 'components/Form/Form';
 import Input                    from 'components/Input/Input';
@@ -9,16 +9,10 @@ import Title                    from 'components/Title/Title';
 import './Login.styl';
 
 
-/**
- * Описание компонента
- */
+const b = bemcl('login');
+
+
 class Login extends React.Component {
-
-    static propTypes = {
-    };
-
-    static defaultProps = {
-    };
 
     constructor(props) {
         super(props);
@@ -28,17 +22,6 @@ class Login extends React.Component {
         }
     }
 
-    /* ------------------------------------------------------------------------------------------ */
-    /* REACT                                                                                      */
-    /* ------------------------------------------------------------------------------------------ */
-
-    /* ------------------------------------------------------------------------------------------ */
-    /* METHODS                                                                                    */
-    /* ------------------------------------------------------------------------------------------ */
-
-    /* ------------------------------------------------------------------------------------------ */
-    /* HANDLERS                                                                                   */
-    /* ------------------------------------------------------------------------------------------ */
 
     /* ------------------------------------------------------------------------------------------ */
     /* RENDER                                                                                     */
@@ -50,20 +33,18 @@ class Login extends React.Component {
 
         return (
             <Form.Row>
-                {this.state.errorMessage}
+                <span className={b('error')}>{this.state.errorMessage}</span>
             </Form.Row>
         )
     }
 
     render() {
-        const b = bemchik('login');
-
         return (
             <section className={b()}>
                 <Title level="2">Войти</Title>
-                <Form method="POST" action="/login">
+                <Form method="POST" action="/api/login">
                     <Form.Row>
-                        <Form.Label htmlFor="email">Адрес электронной почты</Form.Label>
+                        <Form.Label htmlFor="email">Email</Form.Label>
                         <Input type="text" name="email" id="email" />
                     </Form.Row>
 

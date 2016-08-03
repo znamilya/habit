@@ -1,8 +1,8 @@
 import React                    from 'react';
 import { shallow, render }      from 'enzyme';
 import { expect }               from 'chai';
+import { resolveNameByIndex }   from 'helpers/date';
 import Component                from './DateSwitcher';
-import { resolveNameByIndex }   from '../../helpers/date';
 
 
 const defaultProps = {

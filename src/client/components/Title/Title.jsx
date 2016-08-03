@@ -1,5 +1,5 @@
 import React, { PropTypes }     from 'react';
-import bemchik                  from 'bemchik';
+import bemcl                    from 'bem-cl';
 
 import './Title.styl';
 
@@ -23,7 +23,7 @@ class Title extends React.Component {
     /* RENDER                                                                                     */
     /* ------------------------------------------------------------------------------------------ */
     render() {
-        const b = bemchik('title');
+        const b = bemcl('title');
         const { level } = this.props;
         const tag = {
             name: `h${level}`

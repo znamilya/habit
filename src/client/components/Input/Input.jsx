@@ -1,5 +1,5 @@
 import React, { PropTypes }     from 'react';
-import bemchik                  from 'bemchik';
+import bemcl                    from 'bem-cl';
 
 import './Input.styl';
 
@@ -36,7 +36,7 @@ class Input extends React.Component {
     /* RENDER                                                                                     */
     /* ------------------------------------------------------------------------------------------ */
     render() {
-        const b = bemchik('input');
+        const b = bemcl('input');
         const { mix, ...rest } = this.props;
 
         if (this.props.onChange) {

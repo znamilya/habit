@@ -1,5 +1,5 @@
 import React    from 'react';
-import bemchik  from 'bemchik';
+import bemcl    from 'bem-cl';
 
 import './Logo.styl';
 
@@ -15,7 +15,7 @@ class Logo extends React.Component {
     /* RENDER                                                                                     */
     /* ------------------------------------------------------------------------------------------ */
     render() {
-        const b = bemchik('logo');
+        const b = bemcl('logo');
 
         return (
             <div className={b()}>

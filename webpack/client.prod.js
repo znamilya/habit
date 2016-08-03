@@ -3,8 +3,8 @@
 const webpack           = require('webpack');
 const path              = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const autoprefixer      = require('autoprefixer');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const PATHS = {
     src: path.join(__dirname, '..', 'src', 'client'),
@@ -13,17 +13,14 @@ const PATHS = {
 const PORT = 7777;
 
 module.exports = {
-    devtool: 'eval',
     target: 'web',
     entry: [
-        'webpack-dev-server/client?http://localhost:' + PORT,
-        'webpack/hot/only-dev-server',
         PATHS.src + '/main',
     ],
 
     output: {
         path: PATHS.dist,
-        filename: 'main.js',
+        filename: 'main.[hash:6].js',
         publicPath: '/',
     },
 
@@ -44,16 +41,17 @@ module.exports = {
             {
                 test: /\.js$/,
                 include: PATHS.src,
-                loaders: ['babel-loader'],
+                loader: 'babel-loader',
             },
             {
                 test: /\.jsx?$/,
                 include: PATHS.src,
-                loaders: ['react-hot-loader', 'babel-loader'],
+                loader: 'babel-loader',
             },
             {
                 test: /\.styl$/,
-                loaders: ['style-loader', 'css-loader', 'postcss-loader', 'stylus-loader'],
+                loader: ExtractTextPlugin.extract('style-loader', 'css-loader!postcss-loader!stylus-loader'),
+
             },
             {
                 test: /\.svg$/,
@@ -66,7 +64,7 @@ module.exports = {
         ],
     },
 
-    postcss: function () {
+    postcss: () => {
         return [autoprefixer];
     },
 
@@ -75,22 +73,24 @@ module.exports = {
             inject: true,
             template: './src/client/index.tpl.html',
         }),
-        new webpack.HotModuleReplacementPlugin(),
+        new ExtractTextPlugin('main.css', { allChunks: true }),
         new webpack.NoErrorsPlugin(),
+        new webpack.optimize.DedupePlugin(),
         new webpack.DefinePlugin({
-            DEV: true,
-            PROD: false,
-            'process.env.NODE_ENV': JSON.stringify('development'),
+            DEV: false,
+            PROD: true,
+            'process.env.NODE_ENV': JSON.stringify('production'),
         }),
+        // new webpack.optimize.UglifyJsPlugin({
+            // compress: {
+                // warnings: false,
+                // drop_console: true,
+                // unsafe: true,
+                // drop_debugger: true,
+            // },
+            // output: {
+                // comments: false
+            // }
+        // }),
     ],
-
-    devServer: {
-        port: PORT,
-        host: 'localhost',
-        hot: true,
-        historyApiFallback: true,
-        proxy: {
-            '/api/*': 'http://localhost:7878',
-        },
-    },
 };

@@ -3,7 +3,7 @@ import { shallow, render, mount }      from 'enzyme';
 import sinon                    from 'sinon';
 import { expect }               from 'chai';
 import Component                from './Habit';
-import Cell                     from '../Cell/Cell';
+import Cell                     from 'components/Cell/Cell';
 
 
 const defaultProps = {

@@ -7,6 +7,13 @@ import thunk                from 'middlewares/thunk';
 import rootReducer          from 'reducers';
 
 
+const middlewares = [async, thunk];
+
+if (DEV) {
+    middlewares.push(logAction);
+}
+
+
 export default function (initialData) {
-    return applyMiddleware(async, thunk, logAction)(createStore)(rootReducer, initialData);
+    return applyMiddleware(...middlewares)(createStore)(rootReducer, initialData);
 }

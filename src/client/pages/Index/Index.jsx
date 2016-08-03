@@ -1,5 +1,5 @@
 import React, { PropTypes }     from 'react';
-import bemchik                  from 'bemchik';
+import bemcl                    from 'bem-cl';
 
 import Page                     from 'pages/Page';
 import HabitsList               from 'features/habitsList/HabitsList'
@@ -20,7 +20,7 @@ class IndexPage extends React.Component {
     /* RENDER                                                                                     */
     /* ------------------------------------------------------------------------------------------ */
     render() {
-        const b = bemchik('index-page');
+        const b = bemcl('index-page');
         const { params } = this.props;
 
         return (

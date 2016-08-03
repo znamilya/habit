@@ -52,6 +52,14 @@ export function toggleActivity(id, dayOfActivity) {
 
 
 export function updateTitle(id, newTitle) {
+    const params = new URLSearchParams();
+
+    params.append('title', newTitle);
+
+    return {
+        type: constants.UPDATE_TITLE,
+        promise: axios.put(`/api/habits/${id}`, params),
+    }
 }
 
 

@@ -1,7 +1,7 @@
 import React, { PropTypes }     from 'react';
 import ReactDOM                 from 'react-dom';
-import bemchik                  from 'bemchik';
-import Cell                     from '../Cell/Cell';
+import bemcl                    from 'bem-cl';
+import Cell                     from 'components/Cell/Cell';
 
 import './Habit.styl';
 
@@ -41,6 +41,9 @@ class Habit extends React.Component {
             isEdit: false,
         };
 
+        this.titleInputNode = null;
+
+        this.enableEditMode = this.enableEditMode.bind(this);
         this.handleCellToggle = this.handleCellToggle.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.handleTitleInputBlur = this.handleTitleInputBlur.bind(this);
@@ -53,7 +56,7 @@ class Habit extends React.Component {
         if (!prevState.isEdit && this.state.isEdit) {
             this.titleInputNode = ReactDOM.findDOMNode(this.refs.titleInput);
 
-            titleInputNode.focus();
+            this.titleInputNode.focus();
         }
     }
 
@@ -70,6 +73,7 @@ class Habit extends React.Component {
             isEdit: true,
         });
     }
+
 
     /* ------------------------------------------------------------------------------------------ */
     /* HANDLERS                                                                                   */
@@ -131,7 +135,7 @@ class Habit extends React.Component {
     }
 
     render() {
-        const b = bemchik('habit');
+        const b = bemcl('habit');
 
         return (
             <li className="habit">

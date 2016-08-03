@@ -1,8 +1,8 @@
 import React, { PropTypes }     from 'react';
-import bemchik                  from 'bemchik';
+import bemcl                    from 'bem-cl';
 import { Link }                 from 'react-router';
 
-import { resolveNameByIndex }   from '../../helpers/date';
+import { resolveNameByIndex }   from 'helpers/date';
 
 import './DateSwitcher.styl';
 
@@ -45,7 +45,7 @@ class DateSwitcher extends React.Component {
     }
 
     render() {
-        const b = bemchik('date-switcher');
+        const b = bemcl('date-switcher');
 
         return (
             <div className={b()}>

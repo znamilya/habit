@@ -1,12 +1,12 @@
 import React, { PropTypes }     from 'react';
 import { withRouter }           from 'react-router'
 import { connect }              from 'react-redux';
-import bemchik                  from 'bemchik';
+import bemcl                    from 'bem-cl';
 import Logo                     from 'components/Logo/Logo';
 
 import { leadZero }             from 'utils/string';
 import Button                   from 'components/Button/Button';
-
+import datePath                 from '../../../common/helpers/datePath';
 import './App.styl';
 
 
@@ -20,14 +20,12 @@ class App extends React.Component {
     };
 
 
-
     /* ------------------------------------------------------------------------------------------ */
     /* REACT                                                                                      */
     /* ------------------------------------------------------------------------------------------ */
     componentWillReceiveProps(nextProps) {
         if (nextProps.user._id && !this.props.user._id) {
-            // FIXME: Заменить на текущую дату
-            this.props.router.push('/2016/07');
+            this.props.router.push(datePath.getNow());
         }
 
         if (!nextProps.user._id && this.props.user._id) {
@@ -46,13 +44,13 @@ class App extends React.Component {
 
         return (
             <div className={b('user-panel')}>
-                <Button tagName="a" href="/logout">Logout</Button>
+                <Button tagName="a" href="/api/logout">Logout</Button>
             </div>
         );
     }
 
     render() {
-        const b = bemchik('app');
+        const b = bemcl('app');
 
         return (
             <div className={b()}>

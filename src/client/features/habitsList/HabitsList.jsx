@@ -1,6 +1,6 @@
 import React, { PropTypes }     from 'react';
 import { connect }              from 'react-redux';
-import bemchik                  from 'bemchik';
+import bemcl                    from 'bem-cl';
 
 import { getDaysInMonth }       from 'utils/date';
 import Input                    from 'components/Input/Input';
@@ -45,11 +45,6 @@ class HabitsList extends React.Component {
             this.props.fetch(nextProps.year, nextProps.month);
         }
     }
-
-
-    /* ------------------------------------------------------------------------------------------ */
-    /* METHODS                                                                                    */
-    /* ------------------------------------------------------------------------------------------ */
 
 
     /* ------------------------------------------------------------------------------------------ */
@@ -115,7 +110,7 @@ class HabitsList extends React.Component {
     }
 
     render() {
-        const b = bemchik('habits-list');
+        const b = bemcl('habits-list');
         const daysCount = getDaysInMonth(this.props.year, this.props.month);
         const { year, month } = this.props;
 

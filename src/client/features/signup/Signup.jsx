@@ -1,26 +1,19 @@
 import React, { PropTypes }     from 'react';
 import { connect }              from 'react-redux';
-import bemchik                  from 'bemchik';
+import bemcl                    from 'bem-cl';
 
 import Form                     from 'components/Form/Form';
 import Input                    from 'components/Input/Input';
 import Button                   from 'components/Button/Button';
 import Title                    from 'components/Title/Title';
-import * as actions             from './actions';
 
 import './Signup.styl';
 
 
-/**
- * Описание компонента
- */
+const b = bemcl('signup');
+
+
 class Signup extends React.Component {
-
-    static propTypes = {
-    };
-
-    static defaultProps = {
-    };
 
     constructor(props) {
         super(props);
@@ -28,28 +21,8 @@ class Signup extends React.Component {
         this.state = {
             errorMessage: window.signupErrorMessage || '',
         }
-
-        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    /* ------------------------------------------------------------------------------------------ */
-    /* REACT                                                                                      */
-    /* ------------------------------------------------------------------------------------------ */
-
-    /* ------------------------------------------------------------------------------------------ */
-    /* METHODS                                                                                    */
-    /* ------------------------------------------------------------------------------------------ */
-
-    /* ------------------------------------------------------------------------------------------ */
-    /* HANDLERS                                                                                   */
-    /* ------------------------------------------------------------------------------------------ */
-    handleSubmit(e) {
-        e.preventDefault();
-
-        const formElements = e.target.elements;
-
-        this.props.signup(formElements.email.value, formElements.password.value);
-    }
 
     /* ------------------------------------------------------------------------------------------ */
     /* RENDER                                                                                     */
@@ -61,20 +34,18 @@ class Signup extends React.Component {
 
         return (
             <Form.Row>
-                {this.state.errorMessage}
+                <span className={b('error')}>{this.state.errorMessage}</span>
             </Form.Row>
         )
     }
 
     render() {
-        const b = bemchik('signup');
-
         return (
             <section className={b()}>
                 <Title level="2">Зарегистрироваться</Title>
-                <Form method="POST" action="/signup">
+                <Form method="POST" action="/api/signup">
                     <Form.Row>
-                        <Form.Label htmlFor="email">Адрес электронной почты</Form.Label>
+                        <Form.Label htmlFor="email">Email</Form.Label>
                         <Input type="text" name="email" id="email" />
                     </Form.Row>
 
@@ -95,9 +66,6 @@ class Signup extends React.Component {
 }
 
 export default connect(
-    state => ({
-    }),
-    {
-        signup: actions.signup,
-    }
+    state => ({}),
+    {}
 )(Signup);

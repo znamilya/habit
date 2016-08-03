@@ -60,14 +60,23 @@ const controller = {
     },
 
     updateOne: (req, res, next) => {
-        const { habit, body: { dayNumber } } = req;
-        const { activities } = habit;
-        const activityIndex = activities.indexOf(dayNumber);
+        const { habit, body } = req;
 
-        if (activityIndex === -1) {
-            activities.push(dayNumber)
-        } else {
-            activities.splice(activityIndex, 1);
+        // TODO: выглядит как говно!
+        if (body.title) {
+            habit.title = body.title;
+        }
+
+        if (body.dayNumber) {
+            const { dayNumber } = body;
+            const { activities } = habit;
+            const activityIndex = activities.indexOf(dayNumber);
+
+            if (activityIndex === -1) {
+                activities.push(dayNumber)
+            } else {
+                activities.splice(activityIndex, 1);
+            }
         }
 
         controller._save(habit, 200, res);

@@ -1,5 +1,5 @@
 import React, { PropTypes }     from 'react';
-import bemchik                  from 'bemchik';
+import bemcl                    from 'bem-cl';
 
 import './Cell.styl';
 
@@ -44,7 +44,7 @@ class Cell extends React.Component {
     /* RENDER                                                                                     */
     /* ------------------------------------------------------------------------------------------ */
     render() {
-        const b = bemchik('cell');
+        const b = bemcl('cell');
 
         return (
             <div className={b({ active: this.props.active })}

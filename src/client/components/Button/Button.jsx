@@ -1,5 +1,5 @@
 import React, { PropTypes }     from 'react';
-import bemchik                  from 'bemchik';
+import bemcl                    from 'bem-cl';
 
 import './Button.styl';
 
@@ -25,7 +25,7 @@ class Button extends React.Component {
     /* RENDER                                                                                     */
     /* ------------------------------------------------------------------------------------------ */
     render() {
-        const b = bemchik('button');
+        const b = bemcl('button');
         const { tagName, theme, mix, size, ...rest } = this.props;
 
         return (
